@@ -39,7 +39,10 @@ var countDiff=function(diff){
 var hasNoteAt=function(json,pos) {
 	var p=json.offsets.indexOf(pos);
 	if (p>-1) {
-		return json.tags[p].substr(0,4)=="note";
+		while (json.offsets[p]&&json.offsets[p]==pos) {
+			if (json.tags[p].substr(0,4)=="note") return true;
+			p++;
+		}
 	}
 }
 
@@ -69,7 +72,8 @@ for (var taisho_sid in t99) {
 		}
 
 		diffcount++;
-		console.log("<h2><font color=brown>T"+taisho_sid+"</font>::<font color=green>Y"+yinshun_sid+"</font></h2>");
+		console.log("<h2><font color=blue>T"+taisho_sid+"</font>(T02."+t99[taisho_sid].pb+")"+
+			"::<font color=red>Y"+yinshun_sid+"</font>("+agama_yinshun[yinshun_sid].pb+")"+"</h2>");
 		diff.forEach(function(d){
 
 			if (d.added) {
@@ -77,12 +81,12 @@ for (var taisho_sid in t99) {
 				hasnote=hasNoteAt(agama_yinshun[yinshun_sid],yinshun_offset);
 
 				var key=hasnote?"color":"background";
-				console.log("<span style='"+key+":green'>"+d.value+"</span>")
+				console.log("<span style='"+key+":red'>"+d.value+"</span>")
 			} else if (d.removed) {
 				taisho_offset+=d.value.length;
 				hasnote=hasNoteAt(t99[taisho_sid],taisho_offset);
 				//var key=hasnote?"color":"background";
-				console.log("<span style='color:brown'>"+d.value+"</span>");
+				console.log("<span style='color:blue'>"+d.value+"</span>");
 			} else {
 				taisho_offset+=d.value.length;
 				yinshun_offset+=d.value.length;
