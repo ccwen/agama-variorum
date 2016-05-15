@@ -11,11 +11,9 @@ var jsdiff=require("diff");
 var t99=require("./t99");
 var agama_yinshun=require("./agama_yinshun");
 var diffcount=0,samecount=0;
-var normalize={"却":"卻","恒":"恆","麤": "麁","甞":"嘗","犍": "揵","猪":"豬" ,"脚": "腳"
-,"嘆":"歎","栗":"粟","厨":"廚","茲":"玆","舘":"館" };
-
+var normalize=require("./normalizechar");
 var removeNormalize=function(diff){
-	var out=[],i=0;
+	var out=[],i=0; 
 	while (i<diff.length) {
 		var d=diff[i];
 		if (d.removed && diff[i+1] && diff[i+1].added && diff[i+1].value==normalize[d.value]) {
@@ -72,8 +70,8 @@ for (var taisho_sid in t99) {
 		}
 
 		diffcount++;
-		console.log("<h2><font color=blue>T"+taisho_sid+"</font>(T02."+t99[taisho_sid].pb+")"+
-			"::<font color=red>Y"+yinshun_sid+"</font>("+agama_yinshun[yinshun_sid].pb+")"+"</h2>");
+		console.log("<h2><font color=blue>t"+taisho_sid+"</font>(T02."+t99[taisho_sid].pb+")"+
+			"::<font color=red>y"+yinshun_sid+"</font>("+agama_yinshun[yinshun_sid].pb+")"+"</h2>");
 		diff.forEach(function(d){
 
 			if (d.added) {
